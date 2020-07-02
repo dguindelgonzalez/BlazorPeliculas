@@ -1,7 +1,74 @@
 ﻿@page "/"
+@*<p>Hola, @StringUtilities.ToUpper(name)</p>
 
-<h1>Hello, world!</h1>
+    <p>Vamos a sumar 2 + 2 = @(2+2)</p>
 
-Welcome to your new app.
+    <button @onclick="@(() => ClickHandle())">Presioname</button>*@
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    <div>
+        <h3>Películas</h3>
+
+        @*@foreach (var film in Films)
+        {
+            <div>
+                <p>Título: <b>@film.Title</b></p>
+                <p>Fecha Lanzamiento: <b>@film.Launch.ToString("dd MMM yyyy")</b></p>
+            </div>
+        }*@
+
+        @if (Films == null)
+        {
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Loading_2.gif" />
+            <text>Cargando...</text>
+        }
+        else if (!Films.Any())
+        {
+            <text>No hay peliculas para mostrar</text>
+        }
+        else
+        {
+
+            @for (int i = 0; i < Films.Count; i++)
+            {
+                <div>
+                    @if (i == Films.Count - 1)
+                    {
+                        <p>Esta es la última pelicula</p>
+                    }
+                    <p>@(i+1)) Título: @((MarkupString)@Films[i].Title)</p>
+                    <p>Fecha Lanzamiento: <b>@Films[i].Launch.ToString("dd MMM yyyy")</b></p>
+                </div>
+            }
+        }
+    </div>
+
+@code{
+    string name = "Daniel";
+
+    protected override async Task OnInitializedAsync()
+    {
+        //await Task.Delay(3000);
+        Films = GetFilm();
+    }
+
+    public List<Film> Films;
+
+    public List<Film> GetFilm()
+    {
+        return new List<Film>()
+{
+            new Film(){Title = "<b>Spider-Man: Far From Home</b>",Launch = new DateTime(2019, 7, 2)},
+            new Film(){Title = "<i>Moana</i>",Launch = new DateTime(2016, 11, 23)},
+            new Film(){Title = "Inception",Launch = new DateTime(2010, 7, 16)}
+
+        };
+    }
+
+    private void ClickHandle()
+    {
+        ;
+        Console.WriteLine("Me has clickado!");
+    }
+
+
+}
